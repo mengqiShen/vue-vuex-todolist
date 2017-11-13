@@ -1,9 +1,9 @@
 <template>
    <div class="toolbar">
       <ul>
-        <li><button v-on:click='createNote' class="glyphicon glyphicon-plus"></button></li>
-        <li><button v-on:click='' class="glyphicon glyphicon-star-empty" ></button></li>
-        <li><button v-on:click='' class="glyphicon glyphicon-remove"></button></li>
+        <li><button @click='createNote' class="glyphicon glyphicon-plus"></button></li>
+        <li><button :class='{favorite:isFavorited}' @click='favoriteNote' class="glyphicon glyphicon-star-empty" ></button></li>
+        <li><button @click='removeNote' class="glyphicon glyphicon-remove"></button></li>
       </ul>
    </div>
 </template>
@@ -13,17 +13,23 @@
       name: 'toolbar',
       data(){
         return {
-          // isFavorited: false
+        }
+      },
+      computed:{
+        isFavorited(){
+          return this.$store.state.active_note.favorite
         }
       },
       methods:{
         createNote(){
           this.$store.dispatch('createNote')
+        },
+        favoriteNote(){
+          this.$store.dispatch('favoriteNote')
+        },
+        removeNote(){
+          this.$store.dispatch('removeNote')
         }
-        // favoriteNote(){
-        //   this.$store.dispatch('favoriteNote')
-        //   // this.isFavorited = true
-        // }
       }
 }
 </script>

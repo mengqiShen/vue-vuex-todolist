@@ -1,6 +1,6 @@
 <template>
     <div class="editorarea">
-        <textarea name="" id="" v-on:input="editNote" ></textarea>
+        <textarea name="" id="" @input="editNote" v-model="showActiveNote" ></textarea>
     </div>
 </template>
 
@@ -12,9 +12,9 @@
         }
     },
     computed: {
-        // showActiveNote() {
-        //     return this.$store.state.active_note.text
-        // }
+        showActiveNote() {
+            return this.$store.state.active_note.text
+        }
     },
     methods:{
         editNote(e){
@@ -33,8 +33,8 @@
         line-height: 14px;
     }
     .editorarea textarea {
-        /* height: 100%;
-        width: 100%; */
+        height: 100%;
+        width: 100%;
         border: none;
     }
     

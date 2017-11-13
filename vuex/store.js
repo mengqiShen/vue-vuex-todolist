@@ -6,9 +6,10 @@ export const store = new Vuex.Store({
   state: {
     note_list: [],
     new_note: {text: '新笔记', favorite: false},
-    note: {}
+    note: {},
+    active_note: {}
   },
-  mutations: { // 矛盾：active_note 和 初始化时的note内容
+  mutations: {
     createNote (state) {
       state.note = JSON.parse(JSON.stringify(state.new_note))
       state.note_list.push(state.note)
@@ -17,12 +18,17 @@ export const store = new Vuex.Store({
       state.active_note.text = text
       state.active_note.favorite = false
     },
-    activeNote (state, index) { // active_note 和 note怎么传递值，怎么更新
+    activeNote (state, index) {
       state.active_note = state.note_list[index]
+    },
+    favoriteNote (state) {
+      state.active_note.favorite = !state.active_note.favorite
+    },
+    removeNote (state) {
+      var index = state.note_list.indexOf(state.active_note)
+      state.note_list.splice(index, 1)
+      state.active_note = state.note_list[state.note_list.length - 1]
     }
-    // favoriteNote (state) {
-    //   state.active_note.favorite = !state.active_note.favorite
-    // }
   },
   actions: {
     createNote ({commit}) {
@@ -33,9 +39,12 @@ export const store = new Vuex.Store({
     },
     activeNote ({commit}, index) {
       commit('activeNote', index)
+    },
+    favoriteNote ({commit}) {
+      commit('favoriteNote')
+    },
+    removeNote ({commit}) {
+      commit('removeNote')
     }
-    // favoriteNote ({commit}) {
-    //   commit('favoriteNote')
-    // }
   }
 })

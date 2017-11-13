@@ -3,12 +3,15 @@
         <h3 class="">笔记</h3>
         <div class="btn-group-wrapper">
             <div class="btn-group">
-                <button class="btn btn-default" v-on:click="">所有笔记</button>
-                <button class="btn btn-default" v-on:click="">收藏笔记</button>
+                <button class="btn btn-default" @click="showAllNotes">所有笔记</button>
+                <button class="btn btn-default" @click="showFavoriteNotes">收藏笔记</button>
             </div>
         </div>
         <ul class="list-group">
-            <li class="list-group-item" v-bind:class="{'selected': ind === index}" v-on:click="activeNote(index)" v-for="(note,index) in noteList" v-if="note.text">{{note.text.substring(0,14)}}</li>
+            <li class="list-group-item" :class="{'selected': ind === index}" @click="activeNote(index)" v-for="(note,index) in notesList" v-if="note.text" v-show="isShowAll">{{note.text}}</li>
+            <li class="list-group-item" :class="{'selected': ind === index}" @click="activeNote(index)" v-else>{{newNote}}</li>
+            <li class="list-group-item" :class="{'selected': ind === index}" @click="activeNote(index)" v-for="(note,index) in favoriteNotesList" v-if="note.text" v-show="isShowFavorite">{{note.text}}</li>
+            <li class="list-group-item" :class="{'selected': ind === index}" @click="activeNote(index)" v-else>{{newNote}}</li>
         </ul>
     </div>
 </template>
@@ -18,30 +21,36 @@
     name: 'notelist',
     data(){
         return {
-            ind: ''
+            ind: '',
+            isShowAll: true,
+            isShowFavorite: false
         }
     },
     computed:{
-        noteList() {
+        notesList() {
             return this.$store.state.note_list
+        },
+        favoriteNotesList(){
+            return this.$store.state.note_list.filter(note => note.favorite)
+        },
+        newNote(){
+            return this.$store.state.new_note.text
         }
-        // isSelected(){
-        //     return this.$store.state.isSelected
-        // }
     },
     methods: {
         activeNote(index){  //传参正确(index)
             this.$store.dispatch('activeNote',index)
             this.ind = index
+        },
+        showAllNotes(){
+            this.isShowAll = true
+            this.isShowFavorite = false
+        },
+        showFavoriteNotes(){
+            this.isShowAll = false
+            this.isShowFavorite = true
         }
     }
-    //     allNotes(){
-
-    //     },
-    //     favoriteNotes(){
-
-    //     }
-    // }
 }
 
 </script>
@@ -72,14 +81,8 @@
     .list-group {
         margin-top: 5px !important;
     }
-    .list-group-item {
-        /* display: inline-block;
-        height: 40px;
-        width: 205px;
-        margin: 0; */
-    }
     .selected{
-        background: yellowgreen;
+        background: #EEE8AA;
     }
 </style>
 
