@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
   export default {
       name: 'toolbar',
       data(){
@@ -20,16 +21,12 @@
           return this.$store.state.active_note.favorite
         }
       },
-      methods:{
-        createNote(){
-          this.$store.dispatch('createNote')
-        },
-        favoriteNote(){
-          this.$store.dispatch('favoriteNote')
-        },
-        removeNote(){
-          this.$store.dispatch('removeNote')
-        }
+      methods: {
+        ...mapActions([  //babel stage-3
+          'createNote',
+          'favoriteNote',
+          'removeNote'
+        ])
       }
 }
 </script>

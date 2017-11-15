@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
   export default {
     name: 'editorarea',
     data(){
@@ -16,10 +17,10 @@
             return this.$store.state.active_note.text
         }
     },
-    methods:{
-        editNote(e){
-            this.$store.dispatch('editNote',e.target.value)
-        }
+    methods: {
+        ...mapActions([
+            'editNote(e.target.value)'
+        ])
     }
 }
 </script>
